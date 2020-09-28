@@ -1,0 +1,62 @@
+package texto_desordenado;
+
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Scanner;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+public class Texto_Desordenado {
+
+    public static void main(String[] args) {
+        ArrayList<String> palabrasOrdenadas;
+        ArrayList<String> palabrasDesordenadas;
+        ArrayList<String> palabrasFinales = new ArrayList<String>();
+        String cadenaFinal = "";
+
+        JFileChooser selector = new JFileChooser();
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos txt", "txt");
+        selector.setFileFilter(filtro);
+        if (selector.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            try {
+                Scanner archivo = new Scanner(new FileReader(selector.getSelectedFile().getPath()));
+                String texto = archivo.nextLine();
+                palabrasDesordenadas = convertir(texto);
+                String textoOrdenado = "Mi mama me mima";
+                palabrasOrdenadas = convertir(textoOrdenado);
+
+                for (String palabraOrdenada : palabrasOrdenadas) {
+                    for (String palabraDesordenada : palabrasDesordenadas) {
+                        if (palabraOrdenada.equals(palabraDesordenada)) {
+                            palabrasFinales.add(palabraDesordenada);
+                        }
+                    }
+                }
+
+                for (String palabraFinal : palabrasFinales) {
+                    cadenaFinal = cadenaFinal + " " + palabraFinal;
+                }
+
+                System.out.println("El texto ordenado es: " + cadenaFinal);
+
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+
+        }
+    }
+
+    public static ArrayList<String> convertir(String texto) {
+        ArrayList<String> palabras = new ArrayList<String>();
+        int i = 0;
+        for (int j = 1; j <= texto.length(); j++) {
+            if (texto.substring(j - 1, j).equals(" ")) {
+                palabras.add(texto.substring(i, j - 1));
+                i = j;
+            }
+        }
+        palabras.add(texto.substring(i, texto.length()));
+        return palabras;
+    }
+
+}
